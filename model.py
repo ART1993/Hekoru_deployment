@@ -22,13 +22,13 @@ def cleanframe(df,p_df):
             p_df.loc[:,arg_dummie.columns]=arg_dummie
             p_df.drop(columns=[c,arg_dummie.columns[-1]],inplace=True)
 
-X = df[df.columns[1:-1]]
-Y = df[df.columns[-1]]
+X = df.loc[:,df.columns[1:-1]]
+Y = df.loc[:,df.columns[-1]]
 
 cleanframe(df,X)
 
 df_dummied=X
-df_dummied["SalePrice"]=Y.values
+df_dummied["SalePrice"]=Y
 df_dummied=df_dummied.drop(columns=['TotRmsAbvGrd','GarageCars'])
 corr_df=df_dummied.corr()[df_dummied.columns[-1]].where(abs(df_dummied.corr()[df_dummied.columns[-1]])>0.6).dropna()
 
@@ -39,15 +39,14 @@ for c in corr_df.index[:-1]:
     if len(serie_Xc>0):
         corr_X[c]=serie_Xc
 
-X=df_dummied[corr_df.index[:-1]]
-Y=df_dummied['SalePrice']
-
+X=df_dummied.loc[:,corr_df.index[:-1]]
+Y=df_dummied.loc[:,'SalePrice']
 X_train, X_test, y_train, y_test = train_test_split(X, Y, 
                                                     test_size = 0.3, random_state = 100)
  
 regressor = LinearRegression()
-regressor.fit(X_train, y_train)
-y_pred = regressor.predict(X_test)
+regressor.fit(X_train.values, y_train.values)
+y_pred = regressor.predict(X_test.values)
 
 pickle.dump(regressor, open('model.pkl','wb'))
 

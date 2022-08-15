@@ -4,11 +4,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import pickle
 
-df_housing=pd.read_csv("housing.csv",index_col=0)
-df_clean=df_housing.drop(columns=["Alley","PoolQC","Fence",
-                        "MiscFeature","FireplaceQu"])
-df = df_clean.dropna()
-corr_df=df.corr()[df.columns[-1]].where(abs(df.corr()[df.columns[-1]])>0.5).dropna()
+df=pd.read_csv("housing.csv",index_col=0)
+df.drop(columns=["Alley","PoolQC","Fence",
+                        "MiscFeature","FireplaceQu"],inplace=True)
+df.dropna(inplace=True)
+df.corr()[df.columns[-1]].where(abs(df.corr()[df.columns[-1]])>0.5).dropna(inplace=True)
 for c in df.columns:
     if(np.dtype(df[c])==object and len(df[c].unique())<=1):
         df.drop(columns=[c],inplace=True)
@@ -29,7 +29,7 @@ cleanframe(df,X)
 
 df_dummied=X
 df_dummied["SalePrice"]=Y
-df_dummied=df_dummied.drop(columns=['TotRmsAbvGrd','GarageCars'])
+df_dummied.drop(columns=['TotRmsAbvGrd','GarageCars'], inplace=True)
 corr_df=df_dummied.corr()[df_dummied.columns[-1]].where(abs(df_dummied.corr()[df_dummied.columns[-1]])>0.6).dropna()
 
 corr_X={}

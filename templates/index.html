@@ -1,0 +1,46 @@
+<!---Initialize Home Page--->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <!---Initialize structure of Title and house picture--->
+        <div class = "title">
+            <h1>House Price Predictor</h1>
+        </div>
+        <!---Links/buttons to other websites--->
+        <div class = "page">
+            <!---Containerize paragraph and form for styling--->
+            <div class = "container">
+                <div class = "intro">
+                    <b>
+                        <p class = "Note"><b>Note: Enter values which are reasonable to the context</b></p>
+                    </b>
+                </div>
+                <br>
+                <!---Initialize form structure and inputs, set method to "POST"--->
+                <form action = "{{url_for('predict')}}" method = "POST" class = "info">
+                    <input type="text" id="basement" name="Total square feet of basement area" placeholder="Total square feet of basement area" required="required"/><span style="color:red"> * </span>
+                    <br>
+                    <br>
+                    <input type="text" id="first_floor" name="First Floor square feet" placeholder="First Floor square feet" required="required"/><span style="color:red"> * </span>
+                    <br>
+                    <br>
+                    <input type="text" id="living_room" name="Above grade (ground) living area square feet " placeholder="Above grade living area square feet" required="required"/><span style="color:red"> * </span>
+                    <br>
+                    <br>
+                    <input type="text" id="Garage" name="GarageArea" placeholder="GarageArea"/><span style="color:red" required="required"> * </span>
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+                </form>
+                <br> 
+                <!---Set placeholder for prediction output--->
+                <div class ="pred">
+                    <p class = "result"><b>{{ prediction_text }}</b></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
